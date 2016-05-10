@@ -1,10 +1,9 @@
 # MetabolitDB
-Metaboliten-DB für Forschungsgruppenmodul
+Metabolite DB for Research Group Module ("Forschungsgruppenmodul")
 
 TODO:
-- Daten einarbeiten
-- Docker Tut
+- incorporate further data
 - Docker Mongo
 - Docker bioconductor
-- Docker verlinken
-- PredRet im Docker zum laufen bringen
+- link the Mongo+bioconductor Docker
+- manage to get PredRet working on the bioconductor Docker (in R)
