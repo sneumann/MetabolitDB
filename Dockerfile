@@ -18,7 +18,7 @@ RUN  rm -f /var/lib/dpkg/available && rm -rf  /var/cache/apt/*
 RUN sed -i.bak 's!http://httpredir.debian.org/debian jessie main!http://mirrors.kernel.org/debian jessie main!' /etc/apt/sources.list
 
 
-RUN apt-get update && \
+RUN apt-get update --fix-missing && \
     apt-get -y -t unstable install gdb libxml2-dev python-pip
     # valgrind
 
@@ -60,7 +60,7 @@ svn co https://svn.r-project.org/R/branches/R-3-3-branch R \
                 libncurses5-dev \
                 libpango1.0-dev \
                 libpcre3-dev \
-                libpng12-dev \
+                #libpng12-dev \
                 libreadline-dev \
                 libtiff5-dev \
                 libxft-dev \
@@ -110,7 +110,7 @@ RUN dpkg --purge  \
                 libncurses5-dev \
                 libpango1.0-dev \
                 libpcre3-dev \
-                libpng12-dev \
+               # libpng12-dev \
                 libreadline-dev \
                 libtiff5-dev \
                 libxft-dev \
@@ -132,22 +132,24 @@ RUN rm -rf /usr/lib/R/library /usr/bin/R /usr/bin/Rscript
 
 
 
+### naechste 3 sachen waren nicht auskommentiert. Fehler irgendwo im ADD
+#ADD install.R /tmp/
 
-ADD install.R /tmp/
+#RUN R -f /tmp/install.R && \
+  #  echo "library(BiocInstaller)" > $HOME/.Rprofile
+ 
+ #Fehler dann:
+#Step 15 : RUN R         install.packages("devtools")
+ #---> Running in e8c5d8103c1c
+#/bin/sh: 1: Syntax error: "(" unexpected
+#The command '/bin/sh -c R       install.packages("devtools")' returned a non-zero code: 2
 
-RUN R -f /tmp/install.R && \
-    echo "library(BiocInstaller)" > $HOME/.Rprofile
 
-    Status API Training Shop Blog About 
-
-    © 2016 GitHub, Inc. Terms Privacy Security Contact Help 
-
-
-RUN R 	install.packages("devtools")
-			library(devtools)
-			source("https://bioconductor.org/biocLite.R")
-			biocLite("pcaMethods", ask=FALSE)
-			install.github("mongosoup/rmongodb")
-			install.github("stanstrup/Rplot.extra")
-			install.github("stanstrup/massageR")
-			install.github("stanstrup/PredRet", subdir="PredRetR")
+RUN R -e	"install.packages('devtools');library(devtools);source('https://bioconductor.org/biocLite.R');biocLite('pcaMethods', ask=FALSE);install.github('mongosoup/rmongodb');install.github('stanstrup/Rplot.extra');install.github('stanstrup/massageR');install.github('stanstrup/PredRet', subdir='PredRetR')"
+#RUN R -e "library(devtools)"
+#RUN R -e			"source('https://bioconductor.org/biocLite.R')"
+#RUN R -e			"biocLite('pcaMethods', ask=FALSE)"
+#RUN R -e			"install.github('mongosoup/rmongodb')"
+#RUN R -e			"install.github('stanstrup/Rplot.extra')"
+#RUN R -e			"install.github('stanstrup/massageR')"
+#RUN R -e			"install.github('stanstrup/PredRet', subdir='PredRetR')"
