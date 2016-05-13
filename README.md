@@ -14,7 +14,7 @@ Running Mongo:
 Running the Docker-Files:
 - go to directory where Dockerfile is located (with the Docker Console, tested on Windows10)
 - execute 'docker build -t sneumann/predret:snapshot .'
-- docker run --name predret-server -d -p 8787:8787 -d sneumann/predret:snapshot
+- docker run -d -p 8788:8788 -d sneumann/predret:snapshot
 
 - The rocker/rstudio default login credentials are:
     username: rstudio
