@@ -1,7 +1,7 @@
 
 FROM rocker/rstudio
 
-MAINTAINER sneumann@ipb-halle.de
+MAINTAINER sneumann@ipb-halle.de1
 
 # nuke cache dirs before installing pkgs; tip from Dirk E fixes broken img
 RUN  rm -f /var/lib/dpkg/available && rm -rf  /var/cache/apt/*
@@ -10,7 +10,7 @@ RUN apt-get update --fix-missing
 
 RUN apt-get -y install openbabel libnetcdf-dev libssh2-1-dev r-cran-rjava r-cran-gridextra r-cran-xml
  
-RUN R -e "install.packages(c('devtools', 'rmarkdown', 'shinyBS', 'xlsx', 'DT'))"
+RUN R -e "install.packages(c('devtools', 'rmarkdown', 'xlsx', 'DT'))"
 
 RUN R -e "source('https://bioconductor.org/biocLite.R');biocLite(c('pcaMethods', 'Rdisop', 'xcms', 'CAMERA'), ask=FALSE)"
 
@@ -51,12 +51,22 @@ RUN wget https://raw.githubusercontent.com/rstudio/shiny-server/master/config/de
 
 RUN mkdir -p /var/log/shiny-server ; chown shiny /var/log/shiny-server 
 
+## Install the current versions, just to get Dependencies installed 
+## automagically
+RUN R -e "install.packages(c('shiny', 'shinyBS'))"
+
+COPY shiny_0.12.1.tar.gz /tmp/shiny_0.12.1.tar.gz
+RUN R CMD INSTALL /tmp/shiny_0.12.1.tar.gz
+
+COPY shinyBS_0.20.tar.gz /tmp/shinyBS_0.20.tar.gz
+RUN R CMD INSTALL /tmp/shinyBS_0.20.tar.gz
+
 #RUN R -e "library(devtools); install_github('stanstrup/PredRet', subdir='PredRetR') "
 RUN R -e "library(devtools); install_github('sneumann/PredRet', subdir='PredRetR')"
 
 WORKDIR /
-#RUN git clone https://github.com/stanstrup/PredRet.git
-RUN git clone https://github.com/sneumann/PredRet.git
+RUN git clone https://github.com/stanstrup/PredRet.git
+#RUN git clone https://github.com/sneumann/PredRet.git
 
 # Using official github repository
 RUN mv /srv/shiny-server /srv/shiny-server_orig
@@ -64,6 +74,7 @@ WORKDIR /srv
 RUN mv /PredRet/retdb shiny-server
 RUN mv /PredRet/scripts .
 
+RUN sed -i -e 's/predret_local <- TRUE/predret_local <- FALSE/' /srv/shiny-server/server.R 
 # Expose port
 EXPOSE 3838
 
