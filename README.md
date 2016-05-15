@@ -9,7 +9,7 @@ TODO:
 - manage to get PredRet working on the bioconductor Docker (in R)
 
 Running Mongo:
-- docker run --name predret-mongo -v $PWD/datadir:/data/db -p 27017:27017 -d mongo:2.6
+- docker run --name predret-mongo -v $PWD/datadir:/data/db -p 27017:27017 -d mongo:latest
 
 Running the Docker-Files:
 - go to directory where Dockerfile is located (with the Docker Console, tested on Windows10)

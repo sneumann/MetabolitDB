@@ -62,11 +62,11 @@ COPY shinyBS_0.20.tar.gz /tmp/shinyBS_0.20.tar.gz
 RUN R CMD INSTALL /tmp/shinyBS_0.20.tar.gz
 
 #RUN R -e "library(devtools); install_github('stanstrup/PredRet', subdir='PredRetR') "
-RUN R -e "library(devtools); install_github('sneumann/PredRet', subdir='PredRetR')"
+RUN R -e "library(devtools); install_github('sneumann/PredRet', subdir='PredRetR') "
 
 WORKDIR /
-RUN git clone https://github.com/stanstrup/PredRet.git
-#RUN git clone https://github.com/sneumann/PredRet.git
+#RUN git clone https://github.com/stanstrup/PredRet.git
+RUN git clone https://github.com/sneumann/PredRet.git
 
 # Using official github repository
 RUN mv /srv/shiny-server /srv/shiny-server_orig
@@ -74,7 +74,6 @@ WORKDIR /srv
 RUN mv /PredRet/retdb shiny-server
 RUN mv /PredRet/scripts .
 
-RUN sed -i -e 's/predret_local <- TRUE/predret_local <- FALSE/' /srv/shiny-server/server.R 
 # Expose port
 EXPOSE 3838
 
