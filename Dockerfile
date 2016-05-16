@@ -61,12 +61,12 @@ RUN R CMD INSTALL /tmp/shiny_0.12.1.tar.gz
 COPY shinyBS_0.20.tar.gz /tmp/shinyBS_0.20.tar.gz
 RUN R CMD INSTALL /tmp/shinyBS_0.20.tar.gz
 
-#RUN R -e "library(devtools); install_github('stanstrup/PredRet', subdir='PredRetR') "
-RUN R -e "library(devtools); install_github('sneumann/PredRet', subdir='PredRetR') "
+RUN R -e "library(devtools); install_github('stanstrup/PredRet', subdir='PredRetR')"
+#RUN R -e "library(devtools); install_github('sneumann/PredRet', subdir='PredRetR') "
 
 WORKDIR /
-#RUN git clone https://github.com/stanstrup/PredRet.git
-RUN git clone https://github.com/sneumann/PredRet.git
+RUN git clone https://github.com/stanstrup/PredRet.git
+#RUN git clone https://github.com/sneumann/PredRet.git
 
 # Using official github repository
 RUN mv /srv/shiny-server /srv/shiny-server_orig
@@ -79,6 +79,7 @@ EXPOSE 3838
 
 # Define Entry point script
 WORKDIR /tmp
+COPY PredRet.conf PredRet.conf
 ENTRYPOINT ["/usr/bin/shiny-server","--pidfile=/var/run/shiny-server.pid"]
 
 ## Start with a local copy: mongodump -h "predret.org" -u "predret_readonly" -p "readonly" --db "predret"
