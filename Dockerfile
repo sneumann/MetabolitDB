@@ -70,9 +70,15 @@ RUN git clone https://github.com/stanstrup/PredRet.git
 
 # Using official github repository
 RUN mv /srv/shiny-server /srv/shiny-server_orig
+
 WORKDIR /srv
-RUN mv /PredRet/retdb shiny-server
-RUN mv /PredRet/scripts .
+RUN mkdir /srv/shiny-server/
+RUN mv /PredRet/scripts  /srv/shiny-server/
+RUN mv /PredRet/retdb  /srv/shiny-server/
+RUN mv /PredRet/retdb_admin /srv/shiny-server/
+
+RUN R -e "library(devtools); install_github('ramnathv/rCharts')"
+RUN R -e "library(devtools); install_github('rstudio/shiny-incubator', ref='5b4f15454e23572cce014b52f7c93026da02726c')"
 
 # Expose port
 EXPOSE 3838
@@ -80,6 +86,9 @@ EXPOSE 3838
 # Define Entry point script
 WORKDIR /tmp
 COPY PredRet.conf PredRet.conf
+COPY PredRet.conf /srv/shiny-server/retdb
+COPY PredRet.conf /srv/shiny-server/retdb_admin
+
 ENTRYPOINT ["/usr/bin/shiny-server","--pidfile=/var/run/shiny-server.pid"]
 
 ## Start with a local copy: mongodump -h "predret.org" -u "predret_readonly" -p "readonly" --db "predret"
