@@ -1,0 +1,83 @@
+database_identifier	chemical_formula	smiles	inchi	metabolite_identification	mass_to_charge	fragmentation	charge	retention_time	taxid	species	database	database_version	reliability	uri	search_engine	search_engine_score	modifications	smallmolecule_abundance_sub	smallmolecule_abundance_stdev_sub	smallmolecule_abundance_std_error_sub
+69867				I3COOH				187,999999998			PubChem									
+10103438				6HO-I3CHO				211,999999998			PubChem									
+9815282				4HO-I3CHO				304,999999998			PubChem									
+10256				I3CHO				298,999999998			PubChem									
+82758				5MeO-I3CHO				307,000000002			PubChem									
+5324534				5HO-I3CHO				328,999999998			PubChem									
+146229				4MeO-I3CHO				345			PubChem									
+589098				I3COOMe				411			PubChem									
+854040				1-Me-I3COOH				345			PubChem									
+351795				IAN				399			PubChem									
+5281416				Esculetin				205,000000002			PubChem									
+5381226				Rifampicin				472,000000002			PubChem									
+5280802				trans-3,5-Dimethoxy-4-hydroxycinnamaldehyde				313,000000002			PubChem									
+12802				3-Acetylindole				318			PubChem									
+5280343				Quercetin Dihydrate				375			PubChem									
+5280863				Kaempferol				423			PubChem									
+6675				Taurocholic acid sodium salt				427,999999998			PubChem									
+72276				Epicatechin				226,000000002			PubChem									
+637775				Sinapinsäure				277,000000002			PubChem									
+6436550				Hesperidin methyl chalcone				342			PubChem									
+444539				Zimtsäure				378			PubChem									
+5281607				Chrysin				511,999999998			PubChem									
+73160				Catechin				195			PubChem									
+1794427				Chlorogenic acid				195			PubChem									
+5281404				Harmane				244,000000002			PubChem									
+12560				Erythromycin				385,000000002			PubChem									
+4788				Phloretin				412,999999998			PubChem									
+6466				Gibberellic acid				276			PubChem									
+4114				Xanthotoxin				0			PubChem									
+5770				Reserpine				456			PubChem									
+279817				S-Propylglutatione				163,999999998			PubChem									
+138387				4-Hydroxy-3,5-dimethylbenzoic acid				289,000000002			PubChem									
+717531				3,4 Dimethoxyzimtsäure				342			PubChem									
+5280373				Biochanin A				534			PubChem									
+78360				15-Hydroxypentadecanoic acid				615			PubChem									
+72				3,4 Dihydroxybenzoic acid				120			PubChem									
+3830				Kinetin				187,000000002			PubChem									
+11370				o-Anisic acid				274,999999998			PubChem									
+6072				Phlorizin				325,000000002			PubChem									
+12305761				Aloin				339			PubChem									
+446641				N-(3-Indolylacetyl)-valine				379,000000002			PubChem									
+1001				Phenethylamine				NA			PubChem									
+524508				6-Hydroxyindole				NA			PubChem									
+5281672				Myricetin				324			PubChem									
+5281654				Isorhamnetin				432			PubChem									
+5281417				Esculin				169,999999998			PubChem									
+8655				Syringaldehyde				262,999999998			PubChem									
+5280805				Rutin				271,000000002			PubChem									
+445858				Ferulic acid				273			PubChem									
+5486549				Sinigrin				30			PubChem									
+681				3-Hydroxytyramine				30			PubChem									
+5280536				4-Hydroxy-3-methoxycinnamaldehyde				312			PubChem									
+3260292				S-Decylglutathione				486			PubChem									
+102213				2-O-Methyladenosine				NA			PubChem									
+6057				Tyrosine				NA			PubChem									
+1662				3-Hydroxy-3-methylglutaric acid				30			PubChem									
+6106				Leucine				49,000000002			PubChem									
+10921447				6-Phosphonohexanoic acid				69			PubChem									
+6140				Phenylalanine				79,000000002			PubChem									
+94244				Leu-Leu				217,000000002			PubChem									
+6305				Tryptophan				151,000000002			PubChem									
+637542				p-Coumaric acid1				255			PubChem									
+10465				Heptadecanoic acid				967,000000002			PubChem									
+1175				Harnsaeure				42			PubChem									
+4656408				N-(3-Indolylacetyl)aspartic acid				246			PubChem									
+5326566				Lumichrome				312			PubChem									
+10459				Hexadecanedioic acid				636			PubChem									
+1017				Phtalsaeure				192			PubChem									
+5280896				Abscisinsaeure				360			PubChem									
+70095				Octadecanedioic acid				720			PubChem									
+60961				Adenosin				48			PubChem									
+689043				Kaffeesaeure				210			PubChem									
+1491				2,4 Dihydroxybenzoesaure				204			PubChem									
+6083				Adenosinmonophosphat				42			PubChem									
+72924				6-Hydroxy-pyridin-3-carboxylsaeure				54			PubChem									
+289				Catechol				162			PubChem									
+222528				Deoxycholic acid				630			PubChem									
+135				4-Hydroxybenzoic acid				177			PubChem									
+20984				3,3 Dimethylglutaric acid				202,999999998			PubChem									
+5273569				7,8-Dihydroxy-6-methoxycoumarin				240			PubChem									
+3848				3-Phenyllactic acid				258			PubChem									
+15816				Undecanedioic acid				418,000000002			PubChem									
