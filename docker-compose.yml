@@ -1,0 +1,32 @@
+## Lift all PredRet docker images
+# docker run --name predret-mongo -v $PWD/datadir:/data/db -p 27017:27017 -d mongo:latest
+
+predret-mongo:
+  image: mongo:latest
+  ports:
+    - 27017:27017
+  volumes:
+    - ./datadir:/data/db
+
+
+# - docker run -d --link predret-mongo:predret-mongo -p 8788:3838 sneumann/predret:snapshot 
+predret-shiny:
+  image: sneumann/predret:snapshot
+  ports:
+    - 8788:3838
+  links:
+    - predret-mongo
+
+predret-rstudio:
+  image: sneumann/predret:snapshot
+  expose:
+    - "8787"
+  entrypoint: /init
+  ports:
+    - 8787:8787
+  links:
+    - predret-mongo
+
+
+
+

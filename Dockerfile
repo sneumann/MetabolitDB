@@ -1,155 +1,95 @@
-# DO NOT EDIT FILES CALLED 'Dockerfile'; they are automatically
-# generated. Edit 'Dockerfile.in' and generate the 'Dockerfile'
-# with the 'rake' command.
 
-# The suggested name for this image is: bioconductor/devel_base.
+FROM rocker/rstudio
 
-FROM rocker/rstudio-daily
-
-# FIXME? in release, default CRAN mirror is set to rstudio....should it be fhcrc?
-
-MAINTAINER dtenenba@fredhutch.org
+MAINTAINER sneumann@ipb-halle.de1
 
 # nuke cache dirs before installing pkgs; tip from Dirk E fixes broken img
 RUN  rm -f /var/lib/dpkg/available && rm -rf  /var/cache/apt/*
 
+RUN apt-get update --fix-missing
 
-# temporarily (?) change mirror used
-RUN sed -i.bak 's!http://httpredir.debian.org/debian jessie main!http://mirrors.kernel.org/debian jessie main!' /etc/apt/sources.list
-
-
-RUN apt-get update --fix-missing && \
-    apt-get -y -t unstable install gdb libxml2-dev python-pip
-    # valgrind
-
-RUN pip install awscli
-
-
-
-RUN apt-get -y -t unstable install --fix-missing \
-    texlive texinfo  texlive-fonts-extra texlive-latex-extra
-
-
-
-
-# There should only be one version of R on this container
-#RUN dpkg --purge --force-depends r-base-core
-# FIXME figure out how to REALLY remove r-base-core and deps
-# so that it does not come back.
-
-RUN rm -rf /usr/lib/R/library /usr/bin/R /usr/bin/Rscript
-
-
-
-RUN apt-get remove -y libfreetype6; echo "ignoring return value"
-
-
-RUN cd /tmp && \
-svn co https://svn.r-project.org/R/branches/R-3-3-branch R \
-  && cd R \
-  && DEBIAN_FRONTEND=noninteractive apt-get install -y \
-                libblas-dev \
-                libbz2-dev  \
-                libcairo2-dev \
-                libfontconfig1-dev \
-                libfreetype6-dev \
-                libglib2.0-dev \
-                libjpeg-dev \
-                liblapack-dev  \
-                liblzma-dev \
-                libncurses5-dev \
-                libpango1.0-dev \
-                libpcre3-dev \
-                #libpng12-dev \
-                libreadline-dev \
-                libtiff5-dev \
-                libxft-dev \
-                libxt-dev \
-                r-base-dev \
-                tcl8.6-dev \
-                texlive-base \
-                texlive-fonts-recommended \
-                texlive-generic-recommended \
-                texlive-latex-base \
-                texlive-latex-recommended \
-                tk8.6-dev && \
-    R_PAPERSIZE=letter \
-                R_BATCHSAVE="--no-save --no-restore" \
-                R_BROWSER=xdg-open \
-                PAGER=/usr/bin/pager \
-                PERL=/usr/bin/perl \
-                R_UNZIPCMD=/usr/bin/unzip \
-                R_ZIPCMD=/usr/bin/zip \
-                R_PRINTCMD=/usr/bin/lpr \
-                LIBnn=lib \
-                AWK=/usr/bin/awk \
-                CFLAGS=$(R CMD config CFLAGS) \
-                CXXFLAGS=$(R CMD config CXXFLAGS) \
-                ./configure --prefix=/usr/local --enable-R-shlib \
-                        --without-blas \
-                        --without-lapack \
-                        --with-readline \
-                        --without-recommended-packages \
-                        --program-suffix=dev && \
-                make  && \
-                make install && \
-          cd / && \
-          rm -rf /tmp/R /tmp/downloaded_packages/ /tmp/*.rds \
-  && echo "R_LIBS=\${R_LIBS-'/usr/local/lib/R/site-library:/usr/local/lib/R/library:/usr/lib/R/library'}" >> /usr/local/lib/R/etc/Renviron \
-    && echo 'options("repos"="http://cran.rstudio.com")' >> /usr/local/lib/R/etc/Rprofile.site
-RUN dpkg --purge  \
-                libblas-dev \
-                libbz2-dev  \
-                libcairo2-dev \
-                libfontconfig1-dev \
-                libfreetype6-dev \
-                libglib2.0-dev \
-                libjpeg-dev \
-                liblapack-dev  \
-                liblzma-dev \
-                libncurses5-dev \
-                libpango1.0-dev \
-                libpcre3-dev \
-               # libpng12-dev \
-                libreadline-dev \
-                libtiff5-dev \
-                libxft-dev \
-                libxt-dev \
-                r-base-dev \
-                tcl8.6-dev \
-                texlive-base \
-                texlive-fonts-recommended \
-                texlive-generic-recommended \
-                texlive-latex-base \
-                texlive-latex-recommended  ; \
-                echo "ignoring return value"
-RUN apt-get autoremove -qy
-
-
-
-RUN dpkg --purge --force-depends r-base-core
-RUN rm -rf /usr/lib/R/library /usr/bin/R /usr/bin/Rscript
-
-
-
-### naechste 3 sachen waren nicht auskommentiert. Fehler irgendwo im ADD
-#ADD install.R /tmp/
-
-#RUN R -f /tmp/install.R && \
-  #  echo "library(BiocInstaller)" > $HOME/.Rprofile
+RUN apt-get -y install openbabel libnetcdf-dev libssh2-1-dev r-cran-rjava r-cran-gridextra r-cran-xml
  
- #Fehler dann:
-#Step 15 : RUN R         install.packages("devtools")
- #---> Running in e8c5d8103c1c
-#/bin/sh: 1: Syntax error: "(" unexpected
-#The command '/bin/sh -c R       install.packages("devtools")' returned a non-zero code: 2
+RUN R -e "install.packages(c('devtools', 'rmarkdown', 'xlsx', 'DT'))"
 
+RUN R -e "source('https://bioconductor.org/biocLite.R');biocLite(c('pcaMethods', 'Rdisop', 'xcms', 'CAMERA'), ask=FALSE)"
 
-RUN R -e	"install.packages('devtools');library(devtools);source('https://bioconductor.org/biocLite.R');biocLite('pcaMethods', ask=FALSE);install.github('mongosoup/rmongodb');install.github('stanstrup/Rplot.extra');install.github('stanstrup/massageR');install.github('stanstrup/PredRet', subdir='PredRetR')"
-#RUN R -e "library(devtools)"
-#RUN R -e			"source('https://bioconductor.org/biocLite.R')"
-#RUN R -e			"biocLite('pcaMethods', ask=FALSE)"
-#RUN R -e			"install.github('mongosoup/rmongodb')"
-#RUN R -e			"install.github('stanstrup/Rplot.extra')"
-#RUN R -e			"install.github('stanstrup/massageR')"
-#RUN R -e			"install.github('stanstrup/PredRet', subdir='PredRetR')"
+RUN R -e "library(devtools); install_github('mongosoup/rmongodb')"
+
+RUN R -e "source('https://bioconductor.org/biocLite.R');biocLite(c('ChemmineR'), ask=FALSE)"
+
+RUN R -e "library(devtools); install_github('stanstrup/Rplot.extra');"
+
+RUN R -e "library(devtools); install_github('dgrapov/CTSgetR');"
+
+RUN R -e "library(devtools); install_github('stanstrup/obabel2R')"
+
+RUN R -e "library(devtools); install_github('stanstrup/chemhelper')"
+
+RUN R -e "library(devtools); install_github('stanstrup/massageR');install_github('stanstrup/rmongodb.quick')"
+
+RUN apt-get -y install cmake
+
+# Install and configure shiny-server
+WORKDIR /usr/src
+RUN git clone https://github.com/rstudio/shiny-server.git
+WORKDIR /usr/src/shiny-server
+RUN mkdir tmp
+WORKDIR /usr/src/shiny-server/tmp
+RUN DIR=`pwd`; PATH=$DIR/../bin:$PATH; PYTHON=`which python`; cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DPYTHON="$PYTHON" ../; make; mkdir ../build; (cd .. && ./bin/npm --python="$PYTHON" rebuild); (cd .. && ./bin/node ./ext/node/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js --python="$PYTHON" rebuild)
+RUN make install
+RUN ln -s /usr/local/shiny-server/bin/shiny-server /usr/bin/shiny-server
+RUN useradd -r -m shiny
+RUN mkdir -p /var/log/shiny-server
+RUN mkdir -p /srv/shiny-server
+RUN mkdir -p /var/lib/shiny-server
+RUN chown shiny /var/log/shiny-server
+RUN mkdir -p /etc/shiny-server
+RUN wget https://raw.github.com/rstudio/shiny-server/master/config/upstart/shiny-server.conf -O /etc/init/shiny-server.conf
+RUN cp -r /usr/src/shiny-server/samples/* /srv/shiny-server/
+RUN wget https://raw.githubusercontent.com/rstudio/shiny-server/master/config/default.config -O /etc/shiny-server/shiny-server.conf
+
+RUN mkdir -p /var/log/shiny-server ; chown shiny /var/log/shiny-server 
+
+## Install the current versions, just to get Dependencies installed 
+## automagically
+RUN R -e "install.packages(c('shiny', 'shinyBS'))"
+
+COPY shiny_0.12.1.tar.gz /tmp/shiny_0.12.1.tar.gz
+RUN R CMD INSTALL /tmp/shiny_0.12.1.tar.gz
+
+COPY shinyBS_0.20.tar.gz /tmp/shinyBS_0.20.tar.gz
+RUN R CMD INSTALL /tmp/shinyBS_0.20.tar.gz
+
+RUN R -e "library(devtools); install_github('stanstrup/PredRet', subdir='PredRetR')"
+#RUN R -e "library(devtools); install_github('sneumann/PredRet', subdir='PredRetR') "
+
+WORKDIR /
+RUN git clone https://github.com/stanstrup/PredRet.git
+#RUN git clone https://github.com/sneumann/PredRet.git
+
+# Using official github repository
+RUN mv /srv/shiny-server /srv/shiny-server_orig
+
+WORKDIR /srv
+RUN mkdir /srv/shiny-server/
+RUN mv /PredRet/scripts  /srv/shiny-server/
+RUN mv /PredRet/retdb  /srv/shiny-server/
+RUN mv /PredRet/retdb_admin /srv/shiny-server/
+
+RUN R -e "library(devtools); install_github('ramnathv/rCharts')"
+RUN R -e "library(devtools); install_github('rstudio/shiny-incubator', ref='5b4f15454e23572cce014b52f7c93026da02726c')"
+
+# Expose port
+EXPOSE 3838
+
+# Define Entry point script
+WORKDIR /tmp
+COPY PredRet.conf PredRet.conf
+COPY PredRet.conf /srv/shiny-server/retdb
+COPY PredRet.conf /srv/shiny-server/retdb_admin
+
+ENTRYPOINT ["/usr/bin/shiny-server","--pidfile=/var/run/shiny-server.pid"]
+
+## Start with a local copy: mongodump -h "predret.org" -u "predret_readonly" -p "readonly" --db "predret"
+
