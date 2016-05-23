@@ -6,7 +6,7 @@ predret-mongo:
   ports:
     - 27017:27017
   volumes:
-    - ./datadir:/data/db
+    - /tmp/datadir:/data/db
 
 
 # - docker run -d --link predret-mongo:predret-mongo -p 8788:3838 sneumann/predret:snapshot 

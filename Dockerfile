@@ -8,7 +8,7 @@ RUN  rm -f /var/lib/dpkg/available && rm -rf  /var/cache/apt/*
 
 RUN apt-get update --fix-missing
 
-RUN apt-get -y install openbabel libnetcdf-dev libssh2-1-dev r-cran-rjava r-cran-gridextra r-cran-xml
+RUN apt-get -y install openbabel libnetcdf-dev libssh2-1-dev r-cran-rjava r-cran-gridextra r-cran-xml --fix-missing
  
 RUN R -e "install.packages(c('devtools', 'rmarkdown', 'xlsx', 'DT'))"
 
