@@ -1,7 +1,7 @@
 
 FROM rocker/rstudio
 
-MAINTAINER sneumann@ipb-halle.de1
+MAINTAINER sneumann@ipb-halle.de
 
 # nuke cache dirs before installing pkgs; tip from Dirk E fixes broken img
 RUN  rm -f /var/lib/dpkg/available && rm -rf  /var/cache/apt/*
