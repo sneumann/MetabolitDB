@@ -26,7 +26,8 @@ predret-rstudio:
     - 8787:8787
   links:
     - predret-mongo
-
+  volumes:
+    - /c/Users/Patrik/Documents/GitHub/MetabolitDB/:/data/
 
 
 

@@ -1,18 +1,31 @@
 setwd("C:/Users/Patrik/Desktop/data/")
 
+library(PredRetR)
+
 #test reading of a csv and a tsv
-csv <- read.table("C:/Users/Patrik/Desktop/data/Metabolite negativ H2O MAF.csv", sep=",") 
-tsv <- read.table("C:/Users/Patrik/Desktop/data/Metabolite negativ H2O MAF.tsv", sep="\t")
-csvH <- read.table("C:/Users/Patrik/Desktop/data/Metabolite negativ H2O MAF.csv", sep=",", header=T) 
-tsvH <- read.table("C:/Users/Patrik/Desktop/data/Metabolite negativ H2O MAF.tsv", sep="\t", header=T)
-
+csv <- read.table("/data/Metabolite negativ H2O MAF.csv", sep=",") 
+tsv <- read.table("/data/Metabolite negativ H2O MAF.tsv", sep="\t")
+csvH <- read.table("/data/Metabolite negativ H2O MAF.csv", sep=",", header=T) 
+tsvH <- read.table("/data/Metabolite positiv H2O MAF.tsv", sep="\t", header=T)
+data <- read.table("/data/m_MTBLS160_Exudate_metabolite_profiling_mass_spectrometry_targeted_v2_maf.tsv", sep="\t", header=T)
 #set vector of Predret-colnames, changes are PubChem, Compound and rt
-true_colnames <- c("PubChem","chemical_formula","smiles","inchi","Compound","mass_to_charge","fragmentation","charge","rt","taxid","species","database","database_version","reliability","uri","search_engine","search_engine_score","modifications","smallmolecule_abundance_sub","smallmolecule_abundance_stdev_sub","smallmolecule_abundance_std_error_sub"
-)
+#true_colnames <- c("PubChem","chemical_formula","smiles","inchi","Compound","mass_to_charge","fragmentation","charge","rt","taxid","species","database","database_version","reliability","uri","search_engine","search_engine_score","modifications","smallmolecule_abundance_sub","smallmolecule_abundance_stdev_sub","smallmolecule_abundance_std_error_sub"
+#)
+subdata<-data[data$database=='PubChem', ]
 
+#translating ChEBI to PubChem CID:
+##library(devtools)
+##install_github(repo="CTSgetR", username="dgrapov", ref="simple")
+#library(CTSgetR)
+#values <- CTSgetR(id=subdata$database_identifier,from="ChEBI",to="PubChem CID")
+#subdata$database_identifier<-values$value
+
+colnames(subdata) <- sub('database_identifier','PubChem',colnames(subdata))
+colnames(subdata) <- sub('metabolite_identification','Compound',colnames(subdata))
+colnames(subdata) <- sub('retention_time','rt',colnames(subdata))
 #set the colnames
-colnames(csv) <- true_colnames
-colnames(tsv) <- true_colnames
+#colnames(csv) <- true_colnames
+#colnames(tsv) <- true_colnames
 
 # functions for producing a tsv and a csv file
 to_tsv <- function(filein, fileout) {
@@ -35,9 +48,9 @@ convert_format <- function(filein, fileout, outtype) {
 }
 #TODO
 
-PredRet_upload_CSV(data) {
+PredRet_upload_CSV <- function(data) {
   # Convert data.frame to bson
-  bson_data = mongo.bson.from.df(data_cleaned()$data)
+  bson_data = mongo.bson.from.df(data)
   
   
   # add to table
