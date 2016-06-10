@@ -1,6 +1,10 @@
 setwd("C:/Users/Patrik/Desktop/data/")
+setwd("/data/")
 
 library(PredRetR)
+PredRet.env$mongo$host <- "predret-mongo"
+PredRet.env$mongo$username <- ""
+PredRet.env$mongo$password <- ""
 
 #test reading of a csv and a tsv
 csv <- read.table("/data/Metabolite negativ H2O MAF.csv", sep=",") 
@@ -11,7 +15,7 @@ data <- read.table("/data/m_MTBLS160_Exudate_metabolite_profiling_mass_spectrome
 #set vector of Predret-colnames, changes are PubChem, Compound and rt
 #true_colnames <- c("PubChem","chemical_formula","smiles","inchi","Compound","mass_to_charge","fragmentation","charge","rt","taxid","species","database","database_version","reliability","uri","search_engine","search_engine_score","modifications","smallmolecule_abundance_sub","smallmolecule_abundance_stdev_sub","smallmolecule_abundance_std_error_sub"
 #)
-subdata<-data[data$database=='PubChem', ]
+subdata<-tsvH[tsvH$database=='PubChem', ]
 
 #translating ChEBI to PubChem CID:
 ##library(devtools)
@@ -60,3 +64,31 @@ PredRet_upload_CSV <- function(data) {
   del <- mongo.disconnect(mongo)
   del <- mongo.destroy(mongo)
 }
+
+get_systems()
+#PredRet.env$namespaces
+
+mongo <- PredRet_connect()
+#fields = mongo.bson.buffer.create()
+#mongo.bson.buffer.append(fields, "_id", 1L)
+#mongo.bson.buffer.append(fields, "sys_id", 1L)
+#mongo.bson.buffer.append(fields, "system_name", 1L)
+#mongo.bson.buffer.append(fields, "system_desc", 1L)
+#mongo.bson.buffer.append(fields, "userID", 1L)
+#mongo.bson.buffer.append(fields, "username", 1L)
+#mongo.bson.buffer.append(fields, "system_eluent", 1L)
+#mongo.bson.buffer.append(fields, "system_eluent_pH", 1L)
+#mongo.bson.buffer.append(fields, "system_eluent_additive", 1L)
+#mongo.bson.buffer.append(fields, "system_column", 1L)
+#mongo.bson.buffer.append(fields, "system_column_type", 1L)
+#mongo.bson.buffer.append(fields, "system_ref", 1L)
+#fields = mongo.bson.from.buffer(fields)
+#data_back = mongo.find.all(mongo, ns = PredRet.env$namespaces$ns_rtdata, fields = fields, mongo.oid2character = TRUE)
+#del <- mongo.disconnect(mongo)
+#del <- mongo.destroy(mongo)
+#return(data_back)
+# mongo.find.one(mongo, ns=PredRet.env$namespaces$n_rtdata) klappt scheinbar?
+
+# funktioniert teilweise?
+#testcursor <- mongo.find(mongo, ns=PredRet.env$namespaces$ns_rtdata)
+#mongo.cursor.to.data.frame(testcursor)

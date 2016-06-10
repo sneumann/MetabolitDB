@@ -1,15 +1,9 @@
 ## Lift all PredRet docker images
 # docker run --name predret-mongo -v $PWD/datadir:/data/db -p 27017:27017 -d mongo:latest
 
-predret-mongo:
-  image: mongo:latest
-  ports:
-    - 27017:27017
-  volumes:
-    - /tmp/datadir:/data/db
-
 
 # - docker run -d --link predret-mongo:predret-mongo -p 8788:3838 sneumann/predret:snapshot 
+
 predret-shiny:
   image: sneumann/predret:snapshot
   ports:
@@ -28,6 +22,13 @@ predret-rstudio:
     - predret-mongo
   volumes:
     - /c/Users/Patrik/Documents/GitHub/MetabolitDB/:/data/
+
+predret-mongo:
+  image: mongo:latest
+  ports:
+    - 27017:27017
+  volumes:
+    - /tmp/datadir:/data/db
 
 
 
