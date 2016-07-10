@@ -3,11 +3,11 @@ Metabolite DB for Research Group Module ("Forschungsgruppenmodul")
 
 TODO:
 - get mongo-dump working
--   find out what the error messages from the docker shell mean
--   fix these problems
+    -   find out what the error messages from the docker shell mean
+    -   fix these problems
 - after working mongo dump: see if everything works as planned, which means:
--   data are stored and saved correctly in between sessions (PC restart)
--   predret-shiny systems are shown
+    -   data are stored and saved correctly in between sessions (PC restart)
+    -   predret-shiny systems are shown
 
 Running Mongo:
 - docker run --name predret-mongo -v $PWD/datadir:/data/db -p 27017:27017 -d mongo:latest
