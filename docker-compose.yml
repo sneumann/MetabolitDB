@@ -4,6 +4,7 @@
 
 # - docker run -d --link predret-mongo:predret-mongo -p 8788:3838 sneumann/predret:snapshot 
 
+
 predret-shiny:
   image: sneumann/predret:snapshot
   ports:
@@ -28,7 +29,10 @@ predret-mongo:
   ports:
     - 27017:27017
   volumes:
-    - /tmp/datadir:/data/db
+    - /var/datadir/:/data/db 
+    #- /c/Users/Patrik/Documents/GitHub/MetabolitDB/datadir/:/data/db 
+# /datadir statt /tmp/datadir
+# /c/Users/Patrik/Documents/GitHub/MetabolitDB/datadir:/data/db ?
 
 
 
