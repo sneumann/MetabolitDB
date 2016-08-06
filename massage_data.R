@@ -108,10 +108,14 @@ massage_data <- function(data) {
   if(any(colnames(temp_data)=="pubchem")){
     if(any(colnames(temp_data)=="inchi")){
       no_inchi = !grepl("InChI",temp_data[,"inchi"],fixed=T)   &    !(is.na(temp_data[,"pubchem"]) | is.nan(temp_data[,"pubchem"]))
-      temp_data[no_inchi,"inchi"] = pubchem2inchi(    temp_data[no_inchi,"pubchem"]       )
+      #next line does not work for some reason
+      #temp_data[no_inchi,"inchi"] = pubchem2inchi(    temp_data[no_inchi,"pubchem"]       )
+      temp_data[no_inchi,"inchi"] = "NA"
     }else{
       temp_data=cbind.data.frame(temp_data,inchi=NA)
-      temp_data[,"inchi"] = pubchem2inchi(    temp_data[,"pubchem"]       )
+      #same problem as above with pubchem2inchi
+      #temp_data[,"inchi"] = pubchem2inchi(    temp_data[,"pubchem"]       )
+      temp_data[,"inchi"] = "NA"
     }
   }
   
@@ -122,14 +126,11 @@ massage_data <- function(data) {
   
   
   # Cleanup molecules
-  #updateProgressBar(session, dataId = "uploadprogress", visible=TRUE, value=50)
-  temp_data[,"inchi"] = inchi.rem.stereo( temp_data[,"inchi"])   # remove stereochemistry
-  #updateProgressBar(session, dataId = "uploadprogress", visible=TRUE, value=60)
-  temp_data[,"inchi"] = inchi.rem.charges(temp_data[,"inchi"])   # remove charges
-  #updateProgressBar(session, dataId = "uploadprogress", visible=TRUE, value=70)
-  temp_data[,"inchi"] = inchi.keep.cont(  temp_data[,"inchi"])  # Keep only largest continues part of molecule (that is remove salts)
-  #updateProgressBar(session, dataId = "uploadprogress", visible=TRUE, value=80)
-  
+  # no inchis in there
+  #temp_data[,"inchi"] = inchi.rem.stereo( temp_data[,"inchi"])   # remove stereochemistry
+  #temp_data[,"inchi"] = inchi.rem.charges(temp_data[,"inchi"])   # remove charges
+  #temp_data[,"inchi"] = inchi.keep.cont(  temp_data[,"inchi"])  # Keep only largest continues part of molecule (that is remove salts)
+
   
   # get the time
   time = Sys.time()
@@ -138,13 +139,14 @@ massage_data <- function(data) {
   
   
   # get the system ID from select if present. otherwise get from file.
-  sys_name = as.character(unlist(lapply(systems_in_db(),function(x) x$system_name)))  
+  halle <- "IPB-Halle"
+  #sys_name = as.character(unlist(lapply(systems_in_db(),function(x) x$system_name)))  
+  sys_name = halle
   sys_id = unlist(lapply(systems_in_db(),function(x) as.character.mongo.oid(x$`_id`))  )
-  
   if(data$system_upload==""){  
     idx = match(temp_data[,"system_name"],sys_name)
   }else{
-    idx = data$system_upload==halle#sys_name
+    idx = data$system_upload==halle #sys_name
   }
   
   sys_id = sys_id[idx]
