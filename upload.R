@@ -12,13 +12,13 @@ PredRet.env$mongo$host <- "predret-mongo"
 PredRet.env$mongo$username <- ""
 PredRet.env$mongo$password <- ""
 
-systems_in_db <- reactive({
+systems_in_db <- function(){
   # Make sure it updates on submission
   #input$submit_system
   
   data_back <- get_systems()
   return(data_back)
-})
+}
 #test reading of a csv and a tsv
 csv <- read.table("/data/Metabolite negativ H2O MAF.csv", sep=",") 
 tsv <- read.table("/data/Metabolite negativ H2O MAF.tsv", sep="\t")
@@ -74,6 +74,7 @@ PredRet_upload_CSV <- function(data) {
   del <- mongo.destroy(mongo)
 }
 
+halle <- "IPB_Halle"
 #check systems, for error searching purposes
 get_systems()
 
