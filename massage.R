@@ -42,28 +42,37 @@ massage <- function (input) {
     no_inchi = !grepl("InChI",data[,"inchi"],fixed=T)   &    !(is.na(data[,"pubchem"]) | is.nan(data[,"pubchem"]))
     #next line does not work for some reason
     #temp_data[no_inchi,"inchi"] = pubchem2inchi(    temp_data[no_inchi,"pubchem"]       )
-    data[no_inchi,"inchi"] = "NA"
+    data[no_inchi,"inchi"] = 0
+      #as.character(NA)
   }
   
   time = Sys.time()
   
-  halle <- "IPB-Halle"
-  sys_name = halle
+  halle <- "IPB_Halle"
+  #sys_name = halle
+  sys_name = as.character(unlist(lapply(systems_in_db(),function(x) x$system_name)))  
   sys_id = unlist(lapply(systems_in_db(),function(x) as.character.mongo.oid(x$`_id`))  )
-  #idx = match(data[,"system_name"],sys_name)
-  idx = halle
-  
+  idx = match(halle,sys_name)
   sys_id = sys_id[idx] # "53d78bc07f4ebee5eadbbf06"
   
   if(any(colnames(data)=="system_name")){
     data = subset(data,select = -system_name) # Remove names and rely only on system ids  
   }
   
-  data =data.frame(sys_id,data,time=time,userID=as.integer(1234),username=as.character("Test"),generation=as.integer(0),stringsAsFactors= FALSE)
+  #system=halle zwischen time und userID
+  data =data.frame(sys_id,data,time=time, userID=as.integer(1234),username=as.character("Test"),generation=as.integer(0),stringsAsFactors= FALSE)
   
-  if(!is.na(data)){
-    data <- cbind.data.frame(data,predicted_rt=as.numeric(NA),ci_lower=as.numeric(NA),ci_upper=as.numeric(NA),suspect=FALSE)
-  }
+ # if(!is.na(data)){
+  #TRUE LINE data <- cbind.data.frame(data,predicted_rt=as.numeric(NA),ci_lower=as.numeric(NA),ci_upper=as.numeric(NA),suspect=FALSE)
+  data <- cbind.data.frame(data,predicted_rt=0,ci_lower=0,ci_upper=0,suspect=FALSE)
+  # }
+  #if(!is.na(data)){
+   # data <- cbind.data.frame(data,predicted_rt=NA,ci_lower=NA,ci_upper=NA,suspect=FALSE)
+  #}
+  
+   #correct name (not as vector???) 
+  #corrnames <- as.character(data$name)
+  #data$name <- corrnames
   
   out = data
   return(out)
