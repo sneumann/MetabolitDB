@@ -17,9 +17,9 @@ database_identifier	chemical_formula	smiles	inchi	metabolite_identification	mass
 5280863				Kaempferol				426			PubChem									
 6675				Taurocholic acid sodium salt				430,999999998			PubChem									
 72276				Epicatechin				231			PubChem									
-637775				Sinapinsäure				283,000000002			PubChem									
+637775				Sinapinsaeure				283,000000002			PubChem									
 6436550				Hesperidin methyl chalcone				348			PubChem									
-444539				Zimtsäure				384			PubChem									
+444539				Zimtsaeure				384			PubChem									
 5281607				Chrysin				517,999999998			PubChem									
 73160				Catechin				199,999999998			PubChem									
 1794427				Chlorogenic acid				199,999999998			PubChem									
@@ -31,7 +31,7 @@ database_identifier	chemical_formula	smiles	inchi	metabolite_identification	mass
 5770				Reserpine				456			PubChem									
 279817				S-Propylglutatione				172,000000002			PubChem									
 138387				4-Hydroxy-3,5-dimethylbenzoic acid				295,000000002			PubChem									
-717531				3,4 Dimethoxyzimtsäure				348			PubChem									
+717531				3,4 Dimethoxyzimtsaeure				348			PubChem									
 5280373				Biochanin A				540			PubChem									
 78360				15-Hydroxypentadecanoic acid				619,999999998			PubChem									
 72				3,4 Dihydroxybenzoic acid				129			PubChem									
