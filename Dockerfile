@@ -34,11 +34,13 @@ RUN apt-get -y install cmake
 WORKDIR /usr/src
 RUN git clone https://github.com/rstudio/shiny-server.git
 WORKDIR /usr/src/shiny-server
+RUN git checkout ffcaa6e91778353dbfff1e82e87d74591c04df59
 RUN mkdir tmp
 WORKDIR /usr/src/shiny-server/tmp
-RUN DIR=`pwd`; PATH=$DIR/../bin:$PATH; PYTHON=`which python`; cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DPYTHON="$PYTHON" ../; make; mkdir ../build; (cd .. && ./bin/npm --python="$PYTHON" rebuild); (cd .. && ./bin/node ./ext/node/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js --python="$PYTHON" rebuild)
+RUN DIR=`pwd`; PATH=$DIR/../bin:$PATH; PYTHON=`which python`; cmake -DCMAKE_INSTALL_PREFIX=/usr/local -DPYTHON="$PYTHON" ../ && make && mkdir ../build && (cd .. && ./bin/npm --python="$PYTHON" rebuild) 
+RUN DIR=`pwd`; PATH=$DIR/../bin:$PATH; PYTHON=`which python`; (cd .. && ./bin/npm --python="$PYTHON" install && ./bin/node ./ext/node/lib/node_modules/npm/node_modules/node-gyp/bin/node-gyp.js --python="$PYTHON" rebuild )
 RUN make install
-RUN ln -s /usr/local/shiny-server/bin/shiny-server /usr/bin/shiny-server
+RUN ln -sf /usr/local/shiny-server/bin/shiny-server /usr/bin/shiny-server
 RUN useradd -r -m shiny
 RUN mkdir -p /var/log/shiny-server
 RUN mkdir -p /srv/shiny-server
@@ -86,6 +88,7 @@ EXPOSE 3838
 # Define Entry point script
 WORKDIR /tmp
 COPY PredRet.conf PredRet.conf
+COPY PredRet.conf /root/PredRet.conf
 COPY PredRet.conf /srv/shiny-server/retdb
 COPY PredRet.conf /srv/shiny-server/retdb_admin
 

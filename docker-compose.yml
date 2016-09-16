@@ -22,14 +22,19 @@ predret-rstudio:
   links:
     - predret-mongo
   volumes:
-    - /c/Users/Patrik/Documents/GitHub/MetabolitDB/:/data/
+    - ./rstudio-data/:/data/
+
+#    - /c/Users/Patrik/Documents/GitHub/MetabolitDB/:/data/
 
 predret-mongo:
   image: mongo:latest
   ports:
     - 27017:27017
   volumes:
-    - /var/datadir/:/data/db 
+    - ./datadir:/data/db
+    - ./dump/:/dump/
+
+    #- /var/datadir/:/data/db 
     #- /c/Users/Patrik/Documents/GitHub/MetabolitDB/datadir/:/data/db 
 # /datadir statt /tmp/datadir
 # /c/Users/Patrik/Documents/GitHub/MetabolitDB/datadir:/data/db ?
